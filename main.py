@@ -1,3 +1,5 @@
+import sys
+
 import config
 import telebot
 from telebot import types
@@ -29,6 +31,7 @@ def greet_and_ask(message):
 @bot.message_handler(content_types=["text"])
 def process_message(message):
     try:
+        print("[%d] %s" % (message.chat.id, message.text), file=sys.stderr)
         status, result = update_action(message.chat.id, message.text)
         ask_question_or_give_answer(message.chat.id, status, result)
     except NoSuchAnswerException:
@@ -40,8 +43,9 @@ def process_message(message):
 
 
 if __name__ == '__main__':
+    print("Bot is now running")
     while True:
         try:
             bot.polling(none_stop=True)
         finally:
-            pass
+            print("Restarted bot")
