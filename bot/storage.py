@@ -19,15 +19,13 @@ def update_action(chat_id, text=None):
             state = storage[str(chat_id)]
 
             if text is not None:
-                action = state.update_action(text)
+                film = state.update_action(text)
             else:
-                action = state.update_action()
+                film = state.update_action()
 
             storage[str(chat_id)] = state
 
-            if action[0]:
-                del storage[str(chat_id)]
+            return film
 
-            return action
         except KeyError:
             raise SurveyNotStartedException("Survey not started")

@@ -1,11 +1,10 @@
-from random import shuffle
-
 from telebot import types
 
+from config import answers
 
-def generate_markup(answers):
+
+def generate_markup():
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-    shuffle(answers)
     for item in answers:
         markup.add(item)
     return markup
