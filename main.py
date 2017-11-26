@@ -1,10 +1,10 @@
-from telebot import types
-
 import config
 import telebot
+from telebot import types
 
-from storage import *
-from utils import generate_markup
+from bot import NoSuchAnswerException
+from bot.storage import *
+from bot.utils import generate_markup
 
 bot = telebot.TeleBot(config.token)
 
@@ -29,8 +29,13 @@ def greet_and_ask(message):
 
 @bot.message_handler(content_types=["text"])
 def process_message(message):
-    status, result = update_action(message.chat.id, message.text)
-    ask_question_or_give_answer(message.chat.id, status, result)
+    try:
+        status, result = update_action(message.chat.id, message.text)
+        ask_question_or_give_answer(message.chat.id, status, result)
+    except NoSuchAnswerException:
+        bot.send_message(message.chat.id, "Что-то я не понел, попробуй еще разок.")
+        status, result = update_action(message.chat.id)
+        ask_question_or_give_answer(message.chat.id, status, result)
 
 
 if __name__ == '__main__':

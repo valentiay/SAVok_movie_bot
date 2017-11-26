@@ -1,13 +1,12 @@
 import shelve
 
-from State import State
 from config import *
+
+from . import State
 
 
 def create_state(chat_id):
     with shelve.open(shelve_name, writeback=True) as storage:
-        for item in storage.items():
-            print(item)
         if str(chat_id) in storage:
             del storage[str(chat_id)]
 
